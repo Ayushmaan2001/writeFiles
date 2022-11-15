@@ -16,7 +16,7 @@ const {
     FileOutputStream
 } = require('exmes');
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: PORT,
     credentials: true,       
     optionSuccessStatus: 200
 }
