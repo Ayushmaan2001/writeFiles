@@ -53,7 +53,7 @@ app.use(cors(corsOptions));
 
 function WriteFiles(array,fileName){
     fs.truncate(`${fileName}`,0,() => {});
-    var file = fs.createWriteStream(`${fileName}`);
+    var file = fs.createWriteStream("text"+"/"+`${fileName}`);
     for (let i = 0; i < array.length; i++) {
         file.write(array[i] + ' ')
     }
@@ -78,8 +78,9 @@ app.post('/write_files',(req,res) => {
 //     res.send(output_array);
 // })
 
-app.get('/test',(req,res) => {
-    res.send('running')
+app.post('/download',(req,res) => {
+    let fileName = req.body.fileName;
+    res.download("text"+"/"+`${fileName}`);
 })
 
 app.listen(PORT,() => {
