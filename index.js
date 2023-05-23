@@ -13,12 +13,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 const PORT = process.env.PORT || 5000;
-// const {
-//     Splitter,
-//     Merger,
-//     FileInputStream,
-//     FileOutputStream
-// } = require('exmes');
 const corsOptions = {
     origin: '*',
     credentials: true,
@@ -95,17 +89,6 @@ app.post('/array_final',(req,res) => {
     ArrayFinalOutput(array,fileName,cmp,swap);
     res.send('done writing')
 })
-// app.post('/k_way_external_merge_sort',(req,res) => {
-//     let compute_array = req.body.JSONObject;
-//     WriteFiles(compute_array);
-//     run();
-//     res.send('finally')
-// })
-
-// app.get('/k_way_external_sort_output',(req,res) => {
-//     let output_array = syncReadFile('text/output.txt');
-//     res.send(output_array);
-// })
 
 app.post('/download', (req, res) => {
     let fileName = req.body.fileName;
