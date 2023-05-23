@@ -2,12 +2,16 @@ const express = require('express');
 const tmp = require('tmp-promise');
 const bodyParser = require("body-parser");
 const fs = require('fs')
-const { readFileSync} = require('fs');
+const {
+    readFileSync
+} = require('fs');
 const app = express();
 const cors = require('cors');
 app.use(bodyParser.json());
 app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 const PORT = process.env.PORT || 5000;
 // const {
 //     Splitter,
@@ -17,7 +21,7 @@ const PORT = process.env.PORT || 5000;
 // } = require('exmes');
 const corsOptions = {
     origin: '*',
-    credentials: true,       
+    credentials: true,
     optionSuccessStatus: 200
 }
 app.use(cors(corsOptions));
@@ -51,19 +55,44 @@ app.use(cors(corsOptions));
 //     }
 // }
 
-function WriteFiles(array,fileName){
-    fs.truncate(`${fileName}`,0,() => {});
-    var file = fs.createWriteStream("text"+"/"+`${fileName}`);
+function ArrayFinalOutput(arr,fileName,cmp,swap) {
+    fs.writeFile("text" + "/" + `${fileName}`, '', function () {
+        console.log('done')
+    })
+    fs.appendFileSync("text" + "/" + `${fileName}`, `Comparisons:${cmp} Swaps:${swap}\n  ${arr}`, "UTF-8", {
+        'flags': 'a'
+    })
+    fs.readFile("sample.txt", (err, data) => {
+        if (err) {
+            return console.error(err);
+        }
+        console.log("Data read : ", data.toString())
+    })
+}
+
+
+function WriteFiles(array, fileName) {
+    fs.truncate(`${fileName}`, 0, () => {});
+    var file = fs.createWriteStream("text" + "/" + `${fileName}`);
     for (let i = 0; i < array.length; i++) {
         file.write(array[i] + ' ')
     }
     file.end();
 }
 
-app.post('/write_files',(req,res) => {
+app.post('/write_files', (req, res) => {
     let fileName = req.body.fileName
     let array = req.body.array;
-    WriteFiles(array,fileName);
+    WriteFiles(array, fileName);
+    res.send('done writing')
+})
+
+app.post('/array_final',(req,res) => {
+    let fileName = req.body.fileName;
+    let array = req.body.array;
+    let cmp = req.body.cmp;
+    let swap = req.body.swap;
+    ArrayFinalOutput(array,fileName,cmp,swap);
     res.send('done writing')
 })
 // app.post('/k_way_external_merge_sort',(req,res) => {
@@ -78,11 +107,11 @@ app.post('/write_files',(req,res) => {
 //     res.send(output_array);
 // })
 
-app.post('/download',(req,res) => {
+app.post('/download', (req, res) => {
     let fileName = req.body.fileName;
-    res.download("text"+"/"+`${fileName}`);
+    res.download("text" + "/" + `${fileName}`);
 })
 
-app.listen(PORT,() => {
+app.listen(PORT, () => {
     console.log('running');
 })
