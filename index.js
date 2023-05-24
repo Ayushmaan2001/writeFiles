@@ -58,7 +58,7 @@ function ArrayFinalOutput(arr, fileName, cmp, swap, check) {
     fs.appendFileSync("text" + "/" + `${fileName}`, `Comparisons:${cmp} Swaps:${swap}\n  ${arr}`, "UTF-8", {
         'flags': 'a'
     })
-    fs.readFile("sample.txt", (err, data) => {
+    fs.readFile("text" + "/" + `${fileName}`, (err, data) => {
         if (err) {
             return console.error(err);
         }
