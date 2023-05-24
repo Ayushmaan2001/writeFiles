@@ -49,10 +49,12 @@ app.use(cors(corsOptions));
 //     }
 // }
 
-function ArrayFinalOutput(arr,fileName,cmp,swap) {
-    fs.writeFile("text" + "/" + `${fileName}`, '', function () {
-        console.log('done')
-    })
+function ArrayFinalOutput(arr, fileName, cmp, swap, check) {
+    if (check === 1) {
+        fs.writeFile("text" + "/" + `${fileName}`, '', function () {
+            console.log('done')
+        })
+    }
     fs.appendFileSync("text" + "/" + `${fileName}`, `Comparisons:${cmp} Swaps:${swap}\n  ${arr}`, "UTF-8", {
         'flags': 'a'
     })
@@ -81,12 +83,13 @@ app.post('/write_files', (req, res) => {
     res.send('done writing')
 })
 
-app.post('/array_final',(req,res) => {
+app.post('/array_final', (req, res) => {
     let fileName = req.body.fileName;
     let array = req.body.array;
     let cmp = req.body.cmp;
     let swap = req.body.swap;
-    ArrayFinalOutput(array,fileName,cmp,swap);
+    let check = req.body.check;
+    ArrayFinalOutput(array, fileName, cmp, swap, check);
     res.send('done writing')
 })
 
